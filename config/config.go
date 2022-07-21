@@ -8,13 +8,11 @@ import (
 )
 
 type Config struct {
-	Host  string
-	Debug bool
+	Host  string `yaml:"host"`
+	Debug bool   `yaml:"debug"`
 }
 
-// Load is opinionated by the default location of the config file.
-// This location is the root of the project.
-// Ff you want to change the location then you can use the env var TUUKOTI_CONFIG.
+// Load simply loads the config from location "path".
 func Load(path string) (*Config, error) {
 	f, err := os.ReadFile(path)
 	if err != nil {
