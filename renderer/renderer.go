@@ -5,6 +5,8 @@ import (
 	"html/template"
 	"io"
 	"io/fs"
+
+	"github.com/labstack/echo/v4"
 )
 
 type Renderer interface {
@@ -41,6 +43,6 @@ func New(fs fs.FS, pattern string) (*HTMLRender, error) {
 	}, nil
 }
 
-func (h *HTMLRender) Render(w io.Writer, templateName string, data interface{}) error {
+func (h *HTMLRender) Render(w io.Writer, templateName string, data interface{}, ctx echo.Context) error {
 	return h.templates.ExecuteTemplate(w, templateName, data)
 }
