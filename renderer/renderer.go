@@ -34,15 +34,25 @@ func (e *ErrFailedToWrite) Error() string {
 }
 
 type HTMLRender struct {
+	fs        fs.FS
+	pattern   string
+	reload    bool
 	templates *template.Template
 }
 
-func New(fs fs.FS, pattern string) (*HTMLRender, error) {
+func New(fs fs.FS, pattern string, reload bool) (*HTMLRender, error) {
 	return &HTMLRender{
 		templates: template.Must(template.ParseFS(fs, pattern)),
+		fs:        fs,
+		pattern:   pattern,
+		reload:    reload,
 	}, nil
 }
 
 func (h *HTMLRender) Render(w io.Writer, templateName string, data interface{}, ctx echo.Context) error {
+	if h.reload {
+		h.templates = template.Must(template.ParseFS(h.fs, h.pattern))
+	}
+
 	return h.templates.ExecuteTemplate(w, templateName, data)
 }
