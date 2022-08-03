@@ -32,7 +32,7 @@ func Load(path string) (*Config, error) {
 		}
 	}
 
-	return nil, nil
+	return cfg, nil
 }
 
 type ErrMissingConfigFile struct {
